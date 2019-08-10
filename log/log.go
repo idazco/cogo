@@ -26,3 +26,7 @@ func Info(msg string) {
 func Warn(msg string) {
 	fmt.Println("[warn]", msg)
 }
+
+func Fatal(msg string, err error) {
+	fmt.Println("[fatal]", msg, err)
+}

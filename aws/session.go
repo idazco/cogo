@@ -5,6 +5,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/idazco/cogo/log"
 	"github.com/aws/aws-sdk-go/aws"
+	"os"
 )
 
 var Session *session.Session
@@ -37,5 +38,18 @@ func StartSession(key, secret, region string) bool {
 			return false
 		}
 	}
+	return true
+}
+
+func StartSessionFromProfile(profile string) bool {
+	os.Setenv("AWS_SDK_LOAD_CONFIG", "True")
+	sess, err := session.NewSessionWithOptions(session.Options{
+		Profile: profile,
+	})
+	if err != nil {
+		log.Error("StartSessionFromProfile('" + profile + "') failed", err)
+		return false
+	}
+	Session = sess
 	return true
 }
