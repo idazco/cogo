@@ -1,18 +1,17 @@
 package aws
 
 import (
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/idazco/cogo/log"
 	"github.com/aws/aws-sdk-go/aws"
-	"os"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/idazco/cogo/log"
 )
 
 var Session *session.Session
 
 func StartSession(key, secret, region string) bool {
 	if len(region) < 5 {
-		log.AppError("region param cannot be an emptry string when calling cogo/aws/session/StartSession")
+		log.AppError("region param cannot be an empty string when calling cogo/aws/session/StartSession")
 		return false
 	}
 
@@ -41,15 +40,17 @@ func StartSession(key, secret, region string) bool {
 	return true
 }
 
-func StartSessionFromProfile(profile string) bool {
-	os.Setenv("AWS_SDK_LOAD_CONFIG", "True")
+func StartSessionFromProfile(profile string) error {
+	if profile == "" {
+		profile = "default"
+	}
 	sess, err := session.NewSessionWithOptions(session.Options{
 		Profile: profile,
+		// Force enable Shared Config support
+		SharedConfigState: session.SharedConfigEnable,
 	})
-	if err != nil {
-		log.Error("StartSessionFromProfile('" + profile + "') failed", err)
-		return false
+	if err == nil {
+		Session = sess
 	}
-	Session = sess
-	return true
+	return nil
 }
