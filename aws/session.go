@@ -20,7 +20,7 @@ func StartSession(key, secret, region string) bool {
 	if len(key) > 0 && len(secret) > 0 {
 		staticCreds := credentials.NewStaticCredentials(key, secret, "")
 		if _, err := staticCreds.Get(); err != nil {
-			log.Error("wpp-golang-lib/awssession.New(..) failed", err)
+			log.Error("cogo/aws/StartSession(..) failed", err)
 			return false
 		}
 		config := &aws.Config{Credentials: staticCreds, Region: aws.String(region)}
