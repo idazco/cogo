@@ -17,6 +17,8 @@ func Sha1Random() string {
 	var letters = []rune("1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 	rand.Seed(time.Now().UnixNano())
 	b := make([]rune, 20)
-	for i := range b { b[i] = letters[rand.Intn(len(letters))] }
-	return string(b)
+	for i := range b {
+		b[i] = letters[rand.Intn(len(letters))]
+	}
+	return Sha1OfString(string(b))
 }
